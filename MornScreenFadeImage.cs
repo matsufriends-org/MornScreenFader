@@ -48,7 +48,7 @@ namespace MornScreenFade
             FadeClearAsync(_defaultClearDuration).Forget();
         }
 
-        public async UniTask FadeClearAsync(CancellationToken ct = default)
+        async UniTask IMornScreenFade.FadeClearAsync(CancellationToken ct = default)
         {
             await FadeClearAsync(_defaultClearDuration, ct);
         }
@@ -63,7 +63,7 @@ namespace MornScreenFade
             await ColorTweenTask(_image, _image.color, endColor, duration, _cts.Token);
         }
 
-        public async UniTask FadeFillAsync(float duration, Color fillColor, CancellationToken ct = default)
+        private async UniTask FadeFillAsync(float duration, Color fillColor, CancellationToken ct = default)
         {
             _cts?.Cancel();
             _cts = CancellationTokenSource.CreateLinkedTokenSource(ct);
