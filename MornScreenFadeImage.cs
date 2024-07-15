@@ -9,7 +9,8 @@ namespace MornScreenFade
     {
         [SerializeField] private Image _image;
         [SerializeField] private Color _defaultFillColor = Color.white;
-        [SerializeField] private float _defaultDuration = 0.3f;
+        [SerializeField] private float _defaultFillDuration = 0.3f;
+        [SerializeField] private float _defaultClearDuration = 0.6f;
         private CancellationTokenSource _cts;
 
         void IMornScreenFade.FadeFillImmediate()
@@ -19,7 +20,7 @@ namespace MornScreenFade
 
         void IMornScreenFade.FadeFill()
         {
-            FadeFillAsync(_defaultDuration, _defaultFillColor).Forget();
+            FadeFillAsync(_defaultFillDuration, _defaultFillColor).Forget();
         }
 
         void IMornScreenFade.FadeFill(float duration)
@@ -29,7 +30,7 @@ namespace MornScreenFade
 
         async UniTask IMornScreenFade.FadeFillAsync(CancellationToken ct)
         {
-            await FadeFillAsync(_defaultDuration, _defaultFillColor, ct);
+            await FadeFillAsync(_defaultFillDuration, _defaultFillColor, ct);
         }
 
         UniTask IMornScreenFade.FadeFillAsync(float duration, CancellationToken ct)
@@ -44,13 +45,14 @@ namespace MornScreenFade
 
         void IMornScreenFade.FadeClear()
         {
-            FadeClearAsync(_defaultDuration).Forget();
+            FadeClearAsync(_defaultClearDuration).Forget();
         }
 
         public async UniTask FadeClearAsync(CancellationToken ct = default)
         {
-            await FadeClearAsync(_defaultDuration, ct);
+            await FadeClearAsync(_defaultClearDuration, ct);
         }
+
         public async UniTask FadeClearAsync(float duration, CancellationToken ct = default)
         {
             _cts?.Cancel();
@@ -69,12 +71,13 @@ namespace MornScreenFade
             await ColorTweenTask(_image, _image.color, fillColor, duration, _cts.Token);
         }
 
-        private async static UniTask ColorTweenTask(Image image, Color startColor, Color endColor, float duration, CancellationToken ct)
+        private static async UniTask ColorTweenTask(Image image, Color startColor, Color endColor, float duration,
+            CancellationToken ct)
         {
             var elapsedTime = 0f;
             while (elapsedTime < duration)
             {
-                elapsedTime += Time.deltaTime;
+                elapsedTime += Time.unscaledDeltaTime;
                 image.color = Color.Lerp(startColor, endColor, elapsedTime / duration);
                 await UniTask.Yield(ct);
             }
