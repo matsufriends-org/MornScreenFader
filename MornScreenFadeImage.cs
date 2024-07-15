@@ -48,7 +48,7 @@ namespace MornScreenFade
             FadeClearAsync(_defaultClearDuration).Forget();
         }
 
-        async UniTask IMornScreenFade.FadeClearAsync(CancellationToken ct = default)
+        async UniTask IMornScreenFade.FadeClearAsync(CancellationToken ct)
         {
             await FadeClearAsync(_defaultClearDuration, ct);
         }
