@@ -5,6 +5,7 @@ namespace MornScreenFade
 {
     public interface IMornScreenFade
     {
+        public float Value { get; set; }
         void FadeFillImmediate();
         void FadeFill();
         void FadeFill(float duration);

@@ -12,6 +12,15 @@ namespace MornScreenFade
         [SerializeField] private float _defaultFillDuration = 0.3f;
         [SerializeField] private float _defaultClearDuration = 0.6f;
         private CancellationTokenSource _cts;
+        public float Value
+        {
+            get => _image.color.a;
+            set
+            {
+                _cts?.Cancel();
+                _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, value);
+            }
+        }
 
         void IMornScreenFade.FadeFillImmediate()
         {
