@@ -19,6 +19,7 @@ namespace MornScreenFade
             {
                 _cts?.Cancel();
                 _image.color = new Color(_image.color.r, _image.color.g, _image.color.b, value);
+                _image.raycastTarget = value >= 1;
             }
         }
 
