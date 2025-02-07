@@ -75,6 +75,7 @@ namespace MornScreenFade
             _image.raycastTarget = false;
             var endColor = _image.color;
             endColor.a = 0;
+            duration *= _image.color.a;
             await ColorTweenTask(_image, _image.color, endColor, duration, _cts.Token);
         }
 
