@@ -87,14 +87,18 @@ namespace MornScreenFade
             await ColorTweenTask(_image, _image.color, fillColor, duration, _cts.Token);
         }
 
-        private async static UniTask ColorTweenTask(Image image, Color startColor, Color endColor, float duration, CancellationToken ct)
+        private async static UniTask ColorTweenTask(Image image, Color startColor, Color endColor, float duration,
+            CancellationToken ct)
         {
-            var elapsedTime = 0f;
-            while (elapsedTime < duration)
+            if (duration > 0)
             {
-                elapsedTime += Time.unscaledDeltaTime;
-                image.color = Color.Lerp(startColor, endColor, elapsedTime / duration);
-                await UniTask.Yield(ct);
+                var elapsedTime = 0f;
+                while (elapsedTime < duration)
+                {
+                    elapsedTime += Time.unscaledDeltaTime;
+                    image.color = Color.Lerp(startColor, endColor, elapsedTime / duration);
+                    await UniTask.Yield(ct);
+                }
             }
 
             image.color = endColor;
