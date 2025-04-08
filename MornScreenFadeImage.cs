@@ -23,6 +23,11 @@ namespace MornScreenFade
             }
         }
 
+        private void Start()
+        {
+            _image.raycastTarget = false;
+        }
+        
         void IMornScreenFade.FadeFillImmediate()
         {
             FadeFillAsync(0, _defaultFillColor).Forget();
